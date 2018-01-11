@@ -1,0 +1,28 @@
+{
+  "name": "deraner",
+  "version": "1.0.0",
+  "description": "Helden Management Software für Das Schwarze Auge.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dev"
+  },
+  "author": "AceVik",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-install": "2.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-install": "^1.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5"
+  },
+  "dependencies": {
+    "jade": "^1.11.0"
+  }
+}

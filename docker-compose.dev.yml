@@ -1,0 +1,28 @@
+web:
+  image: nginx:latest
+  ports:
+    - "127.0.0.1:80:80"
+  volumes:
+    - ./deraner:/deraner
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  links:
+    - php
+
+php:
+  build: ./php
+  volumes: 
+    - ./deraner:/deraner
+    - ./php/php-fpm.conf:/usr/local/etc/php-fpm.d/deraner.conf
+  links:
+    - mysql
+    - redis
+
+mysql:
+  image: mariadb:latest
+  ports:
+    - "127.0.0.1:3316:3306"
+  environment: 
+    - MYSQL_ROOT_PASSWORD=deraner
+
+redis:
+  image: redis:latest
