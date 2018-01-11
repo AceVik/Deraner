@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/flex" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/dotenv" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/debug" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/framework-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/cache" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/requirements-checker" />
+      <path value="$PROJECT_DIR$/deraner/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/deraner/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/deraner/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/deraner/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/deraner/vendor/composer" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/deraner/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/twig-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/profiler-pack" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/stopwatch" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/deraner/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/twig-bridge" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/web-profiler-bundle" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+</project>

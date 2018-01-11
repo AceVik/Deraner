@@ -1,6 +1,28 @@
 // Include gulp
-var gulp = require('gulp');
+const gulp = require('gulp');
 
+const sass = require('gulp-sass');
+const babel = require('gulp-babel');
+
+gulp.task('css', () => {
+    return gulp.src('deraner/templates/Ulmenstein/assets/css/**/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('deraner/public/css'))
+    ;
+});
+
+gulp.task('js', () => {
+    return gulp.src('deraner/templates/Ulmenstein/assets/js/**/*.js')
+            .pipe(babel({
+                presets: ['env']
+            }))
+            .pipe(gulp.dest('deraner/public/js'))
+    ;
+});
+
+gulp.task('default', ['css', 'js']);
+
+/*
 // Include Our Plugins
 var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
@@ -17,9 +39,9 @@ gulp.task('lint', function() {
 
 // Compile Our Sass
 gulp.task('sass', function() {
-    return gulp.src('scss/*.scss')
+    return gulp.src('deraner/Ulmenstein/assets/css/font-awesome/*.scss')
         .pipe(sass())
-        .pipe(gulp.dest('dist/css'));
+        .pipe(gulp.dest('deraner/public/css'));
 });
 
 // Concatenate & Minify JS
@@ -40,3 +62,4 @@ gulp.task('watch', function() {
 
 // Default Task
 gulp.task('default', ['lint', 'sass', 'scripts', 'watch']);
+*/
