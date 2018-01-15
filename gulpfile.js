@@ -6,18 +6,18 @@ const sass = require('gulp-sass');
 const babel = require('gulp-babel');
 
 gulp.task('css', () => {
-    return gulp.src('deraner/templates/Ulmenstein/assets/css/**/*.scss')
+    return gulp.src('deraner/templates/**/assets/css/**/*.scss')
         .pipe(sass())
-        .pipe(gulp.dest('deraner/public/css'))
+        .pipe(gulp.dest('deraner/public/templates'))
     ;
 });
 
 gulp.task('js', () => {
-    return gulp.src('deraner/templates/Ulmenstein/assets/js/**/*.js')
+    return gulp.src('deraner/templates/**/assets/js/**/*.js')
             .pipe(babel({
                 presets: ['env']
             }))
-            .pipe(gulp.dest('deraner/public/js'))
+            .pipe(gulp.dest('deraner/public/templates'))
     ;
 });
 
