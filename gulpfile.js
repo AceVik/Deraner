@@ -2,8 +2,19 @@
 // Include gulp
 const gulp = require('gulp');
 
+const pug = require('gulp-pug');
+const gulpPugBeautify = require('gulp-pug-beautify');
+
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
+
+gulp.task('pug', () => {
+    return gulp.src('deraner/templates/**/*.pug')
+        .pipe(pug())
+        .pipe(gulpPugBeautify({ omit_empty: true }))
+        .pipe(gulp.dest('deraner/public/templates'))
+        ;
+});
 
 gulp.task('css', () => {
     return gulp.src('deraner/templates/**/assets/css/**/*.scss')
@@ -21,7 +32,12 @@ gulp.task('js', () => {
     ;
 });
 
-gulp.task('default', ['css', 'js']);
+gulp.task('fonts', () => {
+    return gulp.src('deraner/templates/**/assets/css/webfonts/**/*')
+        .pipe(gulp.dest('deraner/public/templates'));
+});
+
+gulp.task('default', ['pug', 'css', 'js', 'fonts']);
 
 /*
 // Include Our Plugins

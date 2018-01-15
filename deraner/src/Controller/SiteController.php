@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SiteController extends Controller {
+class SiteController extends BaseController {
 
     /**
     * @Route("/", name="index")
     */
     public function index(Request $rq) {
-        return $this->render('Ulmenstein/sites/index.html.twig');
+        return BinaryFileResponse::create(__DIR__ . '/../../public/templates/' . static::getCurrentTemplate() . '/index.html');
     }
 }

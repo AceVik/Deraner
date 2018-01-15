@@ -1,7 +1,7 @@
 
 ###> symfony/framework-bundle ###
 /deraner/.env
-/deraner/public/bundles/
+/deraner/public/templates/
 /deraner/var/
 /deraner/vendor/
 /node_modules/
