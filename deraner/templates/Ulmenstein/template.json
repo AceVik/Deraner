@@ -1,0 +1,51 @@
+{
+  "name" : "Ulmenstein",
+  "author" : "AceVik <mail@acevik.de>",
+  "templates" : {
+    "" : [
+      {
+        "builder" : "pug",
+        "src" : "*.pug"
+      }
+    ]
+  },
+  "assets" : {
+    "css:style.css" : [
+      {
+        "src": [
+          "css/reset.css"
+        ]
+      },
+      {
+        "builder": "sass",
+        "options": {
+          "errLogToConsole": true
+        },
+        "src": [
+          "css/font-awesome/*.scss",
+          "css/app/*.scss"
+        ]
+      }
+    ],
+
+    "webfonts" : [
+      {
+        "src" : [
+          "webfonts/*"
+        ]
+      }
+    ],
+
+    "js:app.js" : [
+      {
+        "builder" : "babel",
+        "options" : {
+          "presets" : ["env"]
+        },
+        "src" : [
+          "js/app/*.jsx"
+        ]
+      }
+    ]
+  }
+}
