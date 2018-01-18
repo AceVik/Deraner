@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+.idea
 /deraner/.env
 /deraner/public/templates/
 /deraner/var/

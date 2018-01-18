@@ -1,6 +1,9 @@
 
 // Include gulp
+const env = require('dotenv').config({path: 'deraner/.env'}).parsed;
+
 const gulp = require('gulp');
+const gulpif = require('gulp-if');
 
 const minify = require('gulp-uglify');
 const concat = require('gulp-concat');
@@ -11,6 +14,8 @@ const gulpPugBeautify = require('gulp-pug-beautify');
 
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
+
+const sourcemaps = require('gulp-sourcemaps');
 
 const { lstatSync, readdirSync, existsSync, readFileSync } = require('fs');
 const { join } = require('path');
@@ -110,9 +115,9 @@ const compileAssets = (tpl, path, dpath) => {
             if('builder' in args) {
                 if(args.builder in builders) {
                     if('options' in args) {
-                        stream = gulp.src(fullSRC).pipe(builders[args.builder](args.options));
+                        stream = gulp.src(fullSRC).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init())).pipe(builders[args.builder](args.options));
                     } else {
-                        stream = gulp.src(fullSRC).pipe(builders[args.builder]());
+                        stream = gulp.src(fullSRC).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init())).pipe(builders[args.builder]());
                     }
                 } else {
                     console.error('Compilation error! Unknown builder ' + args.builder + '. ' + dest + ' could not be created.');
@@ -127,12 +132,11 @@ const compileAssets = (tpl, path, dpath) => {
             }
         }
 
-        let stm = null;
 
         if(dst.file !== null) {
-            stm = merge(...streams).pipe(concat(dst.file)).pipe(gulp.dest(dpath + '/assets/' + dst.path));
+            stm = merge(...streams).pipe(concat(dst.file)).pipe(gulp.dest(dpath + '/assets/' + dst.path)).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()));
         } else {
-            stm = merge(...streams).pipe(gulp.dest(dpath + '/assets/' + dst.path));
+            stm = merge(...streams).pipe(gulp.dest(dpath + '/assets/' + dst.path)).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()));
         }
 
         rets.push(stm);
@@ -176,9 +180,9 @@ const compileTemplates = (tpl, path, dpath) => {
             if('builder' in args) {
                 if(args.builder in builders) {
                     if('options' in args) {
-                        stream = gulp.src(fullSRC).pipe(builders[args.builder](args.options));
+                        stream = gulp.src(fullSRC).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init())).pipe(builders[args.builder](args.options));
                     } else {
-                        stream = gulp.src(fullSRC).pipe(builders[args.builder]());
+                        stream = gulp.src(fullSRC).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init())).pipe(builders[args.builder]());
                     }
                 } else {
                     console.error('Compilation error! Unknown builder ' + args.builder + '. ' + dest + ' could not be created.');
@@ -196,9 +200,9 @@ const compileTemplates = (tpl, path, dpath) => {
         let stm = null;
 
         if(dst.file !== null) {
-            stm = merge(...streams).pipe(concat(dst.file)).pipe(gulp.dest(dpath + '/' + dst.path));
+            stm = merge(...streams).pipe(concat(dst.file)).pipe(gulp.dest(dpath + '/' + dst.path)).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()));
         } else {
-            stm = merge(...streams).pipe(gulp.dest(dpath + '/' + dst.path));
+            stm = merge(...streams).pipe(gulp.dest(dpath + '/' + dst.path)).pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()));
         }
 
         rets.push(stm);
