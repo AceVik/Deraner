@@ -1,0 +1,55 @@
+
+@font-face{
+    font-family: 'Regency Script';
+    src: url('font/RegencyScript.eot');
+    src: url('font/RegencyScript.woff2') format('woff2'),
+    url('font/RegencyScriptFLF.woff') format('woff'),
+    url('font/RegencyScriptFLF.ttf') format('truetype'),
+    url('font/RegencyScriptFLF.svg#RegencyScriptFLF') format('svg'),
+    url('font/RegencyScript.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#preview-box, #controls {
+    width: 266px;
+    margin: 25px auto 0px auto;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+#preview-box {
+    text-align: center;
+}
+
+#preview {
+    width: 256px;
+    height: 256px;
+    border-radius: 3px;
+    padding: 0px;
+    margin: 0px;
+
+    border: solid 1px #cccccc;
+}
+
+.box {
+    width: 100%;
+    border: solid 1px #cccccc;
+    border-radius: 3px;
+}
+
+.box > div {
+    padding: 2.5px;
+    width: 100%;
+}
+
+.box > div label {
+    display: inline-block;
+    text-align: right;
+    width: 75px;
+    padding-right: 2.5px;
+}
+
+.box > div input {
+    width: 175px;
+}

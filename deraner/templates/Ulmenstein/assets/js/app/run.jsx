@@ -1,3 +1,3 @@
 window.onload = e => {
-    alert('Hallo Welt is here!');
+    console.log('Hallo Welt is here!');
 };

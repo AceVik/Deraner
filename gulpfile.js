@@ -3,6 +3,7 @@
 const env = require('dotenv').config({path: 'deraner/.env'}).parsed;
 
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const gulpif = require('gulp-if');
 
 const minify = require('gulp-uglify');
@@ -212,16 +213,15 @@ const compileTemplates = (tpl, path, dpath) => {
 };
 
 gulp.task('assets', () => {
-    forEachTemplate((tpl, path, dpath) => {
-        console.log('Compiling assets for template ' + tpl.name + '...');
-        compileAssets(tpl, path, dpath);
-    });
+    return gulp.src('node_modules/vue/dist/vue.min.js')
+               .pipe(gulp.dest('deraner/public/assets/js'));
 });
 
 gulp.task('templates', () => {
     forEachTemplate((tpl, path, dpath) => {
-        console.log('Compiling template ' + tpl.name + '...');
+        gutil.log('Compiling template \'' + tpl.name + '\' ...');
         compileTemplates(tpl, path, dpath);
+        compileAssets(tpl, path, dpath);
     });
 });
 

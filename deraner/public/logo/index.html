@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=""utf-8">
+        <title>Logo Creator</title>
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="Font.js"></script>
+        <script type="text/javascript" src="script.js"></script>
+    </head>
+    <body>
+        <div id="preview-box">
+            <canvas id="preview" width="256" height="256"></canvas>
+        </div>
+        <div id="controls">
+            <label for="d" style="font-family: 'Regency Script'; font-size: 1.25em; font-weight: bold;">D:</label>
+            <div id="d" class="box">
+                <div>
+                    <label for="position-x">X: </label><input type="number" id="position-x" value="110">
+                </div>
+                <div>
+                    <label for="position-y">Y: </label><input type="number" id="position-y" value="185">
+                </div>
+                <div>
+                    <label for="color">Farbe: </label><input type="color" id="color" value="#ffffff">
+                </div>
+                <div>
+                    <label for="contour-color">Kontur: </label><input type="color" id="contour-color" value="#ffffff">
+                </div>
+            </div>
+            <br>
+            <label for="circle">Kreis:</label>
+            <div id="circle" class="box">
+                <div>
+                    <label for="radius">Radius: </label><input type="number" id="radius" value="120">
+                </div>
+                <div>
+                    <label for="c-color">Farbe: </label><input type="color" id="c-color" value="#ffffff">
+                </div>
+                <div>
+                    <label for="c-contour-color">Kontur: </label><input type="color" id="c-contour-color" value="#ffffff">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

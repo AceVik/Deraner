@@ -7,29 +7,29 @@
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "predis/predis": "^1.1",
         "sensio/framework-extra-bundle": "^5.1",
-        "symfony/asset": "^4.0",
-        "symfony/cache": "^4.0",
+        "symfony/asset": "^4",
+        "symfony/cache": "^4",
         "symfony/class-loader": "^3.4",
-        "symfony/config": "^4.0",
-        "symfony/console": "^4.0",
-        "symfony/dependency-injection": "^4.0",
-        "symfony/event-dispatcher": "^4.0",
+        "symfony/config": "^4",
+        "symfony/console": "^4",
+        "symfony/dependency-injection": "^4",
+        "symfony/event-dispatcher": "^4",
         "symfony/flex": "^1.0",
-        "symfony/framework-bundle": "^4.0",
+        "symfony/framework-bundle": "^4",
         "symfony/lts": "^4@dev",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
         "symfony/profiler-pack": "^1.0",
         "symfony/requirements-checker": "^1.0",
-        "symfony/routing": "^4.0",
-        "symfony/security-bundle": "^4.0",
+        "symfony/routing": "^4",
+        "symfony/security-bundle": "^4",
         "symfony/swiftmailer-bundle": "^3.1",
-        "symfony/translation": "^4.0",
-        "symfony/validator": "^4.0",
-        "symfony/yaml": "^4.0"
+        "symfony/translation": "^4",
+        "symfony/validator": "^4",
+        "symfony/yaml": "^4"
     },
     "require-dev": {
-        "symfony/dotenv": "^4.0"
+        "symfony/dotenv": "^4"
     },
     "config": {
         "preferred-install": {
