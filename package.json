@@ -10,8 +10,8 @@
     "type": "git",
     "url": "dev"
   },
-  "author": "AceVik",
-  "license": "MIT",
+  "author": "Viktor Machnik",
+  "license": "MPL-2.0",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-install": "2.1.0",
