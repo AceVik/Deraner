@@ -1,5 +1,0 @@
-parameters:
-    env(REDIS_DSN): 'redis://localhost'
-
-redis:
-    dsn: '%env(resolve:REDIS_DSN)%'

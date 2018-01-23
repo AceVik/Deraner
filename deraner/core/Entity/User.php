@@ -22,7 +22,7 @@ class User {
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length="256")
+     * @ORM\Column(type="string", length=256)
      */
     protected $mail;
 
@@ -31,7 +31,7 @@ class User {
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="256")
+     * @ORM\Column(type="string", length=256)
      */
     protected $password;
 
@@ -39,7 +39,7 @@ class User {
      * @var Template
      *
      * @ORM\ManyToOne(targetEntity="Template", inversedBy="users")
-     * @JoinColumn(name="template_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id")
      */
     protected $template;
 

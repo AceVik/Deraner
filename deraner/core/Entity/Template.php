@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping AS ORM;
  * Template model.
  *
  * @ORM\Entity(repositoryClass="Deraner\Repository\TemplateRepository")
+ * @ORM\Table(name="templates")
  *
  * @author	Viktor Machnik <viktor@machnik.online>
  * @license	Mozilla Public License 2.0 <https://www.mozilla.org/media/MPL/2.0/index.txt>
@@ -23,14 +24,14 @@ class Template {
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length="128")
+     * @ORM\Column(type="string", length=128)
      */
     protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length="1024")
+     * @ORM\Column(type="string", length=1024)
      */
     protected $path;
 

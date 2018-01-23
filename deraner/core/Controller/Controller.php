@@ -5,13 +5,12 @@ namespace Deraner\Controller;
 use Deraner\Entity\Template;
 use Deraner\Entity\User;
 use Deraner\Repository\TemplateRepository;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
-
-//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Deraner controller base
@@ -62,17 +61,17 @@ abstract class Controller implements ContainerAwareInterface {
 //            $item = CacheItem::
 //        }
     }
-
+/*
     public function getCache() : AbstractAdapter {
         //TODO: Auto choose cache.
         static $redisAdapter = null;
 
         if(is_null($redisAdapter)) {
-            $redisAdapter = RedisAdapter::createConnection($this->getParameter('redis.dsn'));
+            $redisAdapter = RedisAdapter::createConnection($this->getParameter('framework.cache.default_redis_provider'));
         }
 
         return $redisAdapter;
-    }
+    }*/
 
     public function getTemplate() : Template {
         $user = $this->getUser();
@@ -83,7 +82,7 @@ abstract class Controller implements ContainerAwareInterface {
              */
             $templateRepository = $this->getDoctrine()->getRepository(Template::class);
 
-            return $templateRepository->getTemplateByName($this->getParameter('deraner.default_template'));
+            return $templateRepository->getTemplateByName('Ulmenstein');
         }
 
         return $user->getTemplate();
@@ -129,21 +128,21 @@ abstract class Controller implements ContainerAwareInterface {
     /**
      * Get a user from the Security Token Storage.
      *
-     * @return User
+     * @return User|null
      * @throws \LogicException If SecurityBundle is not available
      */
-    protected function getUser() : User {
+    protected function getUser() {
         if (!$this->container->has('security.token_storage')) {
             throw new \LogicException('The SecurityBundle is not registered in your application. Try running "composer require symfony/security-bundle".');
         }
 
         if (null === $token = $this->container->get('security.token_storage')->getToken()) {
-            return;
+            return null;
         }
 
         if (!is_object($user = $token->getUser())) {
             // e.g. anonymous authentication
-            return;
+            return null;
         }
 
         return $user;

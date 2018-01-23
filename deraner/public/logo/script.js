@@ -19,19 +19,19 @@ window.onload = function() {
 function draw() {
     ctx.textAlign="center";
 
-    ctx.fillStyle = 'rgba(25, 25, 25, 0.5)';
+    ctx.fillStyle = 'rgba(25, 25, 25, 0.95)';
     ctx.beginPath();
     ctx.arc(128, 128, 120, 0, 2 * Math.PI);
     ctx.fill();
 
-    ctx.fillStyle = 'rgba(25, 25, 25, 0.75)';
+    ctx.fillStyle = 'rgba(25, 25, 25, 1.0)';
     ctx.beginPath();
     ctx.arc(128, 128, 120, 0, 2 * Math.PI);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
     ctx.font = "bold 12em Regency Script";
     ctx.fillText("D", 110, 185);
 
-    requestAnimationFrame(draw);
+    //requestAnimationFrame(draw);
 }

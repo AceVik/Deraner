@@ -39,7 +39,38 @@
       <path value="$PROJECT_DIR$/deraner/vendor/symfony/twig-bridge" />
       <path value="$PROJECT_DIR$/deraner/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/deraner/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/swiftmailer-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/monolog-bridge" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/security" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/doctrine-bridge" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/class-loader" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/property-access" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/orm-pack" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/security-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/asset" />
+      <path value="$PROJECT_DIR$/deraner/vendor/zendframework/zend-eventmanager" />
+      <path value="$PROJECT_DIR$/deraner/vendor/symfony/inflector" />
+      <path value="$PROJECT_DIR$/deraner/vendor/zendframework/zend-code" />
+      <path value="$PROJECT_DIR$/deraner/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/deraner/vendor/ocramius/proxy-manager" />
+      <path value="$PROJECT_DIR$/deraner/vendor/ocramius/package-versions" />
+      <path value="$PROJECT_DIR$/deraner/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/deraner/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/deraner/vendor/predis/predis" />
+      <path value="$PROJECT_DIR$/deraner/vendor/jdorn/sql-formatter" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/doctrine-cache-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/deraner/vendor/doctrine/doctrine-migrations-bundle" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
 </project>
