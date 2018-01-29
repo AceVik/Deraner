@@ -155,9 +155,9 @@ const compile = (tpl, obj, path, destPath) => {
                     }
 
                     let replaceOptions = {
-                        regex: /(#asset\(.+\))/ig,
+                        regex: /(#uri:.+?\.(?:js|css))/ig,
                         replace: str => {
-                            let mt = /#asset\((.+)\)/ig.exec(str);
+                            let mt = /#uri:(.+?\.(?:js|css))/ig.exec(str);
                             let fl = mt[1];
 
                             let tmp = /\.(js|css)$/ig.exec(fl);
