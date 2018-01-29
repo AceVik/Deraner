@@ -5,7 +5,7 @@ const env = require('dotenv').config({path: 'deraner/.env'}).parsed;
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const gulpif = require('gulp-if');
-const replace = require('gulp-regex-replace');
+const replace = require('gulp-replace');
 
 const uglifyjs = require('gulp-uglify');
 const uglifycss = require('gulp-uglifycss');
@@ -15,7 +15,6 @@ const concat = require('gulp-concat');
 const merge = require('merge-stream');
 
 const pug = require('gulp-pug');
-const gulpPugBeautify = require('gulp-pug-beautify');
 
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
@@ -89,6 +88,14 @@ const compile = (tpl, obj, path, destPath) => {
     let assets = obj || null;
     if(assets === null) return;
 
+    const templateRootURI = '/templates/' + tpl.name;
+    const assetsTemplateURI = templateRootURI + '/assets';
+    const assetsRootURI = '/assets';
+
+    const templateRootPublicPath = templatesDestDir + '/' + tpl.name;
+    const assetsTemplatePublicPath = templateRootPublicPath + '/assets';
+    const assetsRootPublicPath = 'deraner/public/assets';
+
     let rets = new Array();
 
     for(let dest in assets) {
@@ -148,11 +155,26 @@ const compile = (tpl, obj, path, destPath) => {
                     }
 
                     let replaceOptions = {
-                        regex: /.*(#assets\(.+\)).*/ig,
+                        regex: /(#asset\(.+\))/ig,
                         replace: str => {
-                            let mt = /#assets\((.+)\)/ig.exec(str);
-                            let pth = '/template/' + tpl.name + '/assets/js/' + mt[1];
-                            console.log(str, pth);
+                            let mt = /#asset\((.+)\)/ig.exec(str);
+                            let fl = mt[1];
+
+                            let tmp = /\.(js|css)$/ig.exec(fl);
+
+                            if(tmp) {
+                                let sub_uri = '/' + tmp[1] + '/' + fl;
+
+                                if(existsSync(assetsTemplatePublicPath + sub_uri))
+                                    return assetsTemplateURI + sub_uri;
+
+                                if(existsSync(assetsRootPublicPath + sub_uri))
+                                    return assetsRootURI + sub_uri;
+
+                                gutil.log('Warning: Asset not found \'' + fl + '\'. Using template root URI as asset URI.');
+                                return templateRootURI + '/' + fl;
+                            }
+
                             return pth;
                         }
                     };
@@ -161,14 +183,14 @@ const compile = (tpl, obj, path, destPath) => {
                         stream = gulp.src(fullSRC)
                                         .pipe(gulpif(createSourceMaps, sourcemaps.init()))
                                         .pipe(builders[args.builder](args.options))
-                                        .pipe(replace(replaceOptions))
+                                        .pipe(replace(replaceOptions.regex, replaceOptions.replace))
                                         .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                                         .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     } else {
                         stream = gulp.src(fullSRC)
                                         .pipe(gulpif(createSourceMaps, sourcemaps.init()))
                                         .pipe(builders[args.builder]())
-                                        .pipe(replace(replaceOptions))
+                                        .pipe(replace(replaceOptions.regex, replaceOptions.replace))
                                         .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                                         .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     }
@@ -249,9 +271,11 @@ gulp.task('assets', () => {
 gulp.task('templates', () => {
     forEachTemplate((tpl, path, dpath) => {
         gutil.log('Compiling template \'' + tpl.name + '\' ...');
-        compile(tpl, tpl.templates, path + '/', dpath + '/');
+
+        //Important! Assets first.
         compile(tpl, tpl.assets, path + '/assets/', dpath + '/assets/');
+        compile(tpl, tpl.templates, path + '/', dpath + '/');
     });
 });
 
-gulp.task('default', ['templates', 'assets']);
+gulp.task('default', ['assets', 'templates']);

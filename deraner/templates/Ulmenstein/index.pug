@@ -4,15 +4,13 @@ html(lang="de")
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
         title Test
-        link(rel="stylesheet" href="/assets/css/fa5.css")
-        link(rel="stylesheet" href='/templates/Ulmenstein/assets/css/style.css')
+        link(rel="stylesheet" href="#asset(fa5.css)")
+        link(rel="stylesheet" href="#asset(style.css)")
 
-        script(type="text/javascript" src="/assets/js/vue.min.js")
-        script(type="text/javascript" src="/assets/js/dwarf.js")
-        script(type="text/javascript" src="/assets/js/deraner.js")
-        script(type="text/javascript" src='/templates/Ulmenstein/assets/js/app.js')
-
-        script(type="text/javascript" src="#assets(app.js)")
+        script(type="text/javascript" src="#asset(vue.min.js)")
+        script(type="text/javascript" src="#asset(dwarf.js)")
+        script(type="text/javascript" src="#asset(deraner.js)")
+        script(type="text/javascript" src="#asset(app.js)")
     body
         h1
             i.fas.fa-user
