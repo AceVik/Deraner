@@ -1,17 +1,39 @@
 {
   "name" : "Ulmenstein",
   "author" : "AceVik <mail@acevik.de>",
+  "env" : {
+    "test": "AceVik is sooo coool!!!"
+  },
+
   "templates" : {
     "" : [
       {
         "builder" : "pug",
+        "options": {
+          "pretty": true
+        },
         "src" : "*.pug"
       }
     ]
   },
   "assets" : {
+    "css:fa5.css" : [
+      {
+        "builder": "sass",
+        "options": {
+          "errLogToConsole": true
+        },
+        "sourcemap": false,
+        "minify": true,
+        "src": [
+          "css/font-awesome/*.scss"
+        ]
+      }
+    ],
+
     "css:style.css" : [
       {
+        "minify": true,
         "src": [
           "css/reset.css"
         ]
@@ -22,7 +44,6 @@
           "errLogToConsole": true
         },
         "src": [
-          "css/font-awesome/*.scss",
           "css/app/*.scss"
         ]
       }
@@ -30,6 +51,8 @@
 
     "webfonts" : [
       {
+        "sourcemap": false,
+        "minify": false,
         "src" : [
           "webfonts/*"
         ]

@@ -2,10 +2,19 @@ doctype html
 html(lang="de")
     head
         meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
         title Test
-        link(rel="stylesheet" href="/templates/Ulmenstein/assets/css/style.css")
+        link(rel="stylesheet" href="/assets/css/fa5.css")
+        link(rel="stylesheet" href='/templates/Ulmenstein/assets/css/style.css')
+
         script(type="text/javascript" src="/assets/js/vue.min.js")
-        script(type="text/javascript" src="/templates/Ulmenstein/assets/js/app.js")
+        script(type="text/javascript" src="/assets/js/dwarf.js")
+        script(type="text/javascript" src="/assets/js/deraner.js")
+        script(type="text/javascript" src='/templates/Ulmenstein/assets/js/app.js')
+
+        script(type="text/javascript" src="#assets(app.js)")
     body
         h1
             i.fas.fa-user
+            div #{template.name}: #{template.env.test}
+            div #{env.APP_ENV}
