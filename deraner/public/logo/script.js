@@ -17,21 +17,25 @@ window.onload = function() {
 };
 
 function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     ctx.textAlign="center";
 
-    ctx.fillStyle = 'rgba(25, 25, 25, 0.95)';
+    ctx.fillStyle = '#010101';
     ctx.beginPath();
     ctx.arc(128, 128, 120, 0, 2 * Math.PI);
     ctx.fill();
 
-    ctx.fillStyle = 'rgba(25, 25, 25, 1.0)';
+    ctx.fillStyle = '#dd0088';
     ctx.beginPath();
     ctx.arc(128, 128, 120, 0, 2 * Math.PI);
-    ctx.stroke();
+    ctx.strokeStyle = ctx.fillStyle;
+    ctx.lineWidth = 15;
+    ctx.strokeText("D", 105, 190);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+    ctx.fillStyle = '#ffd700';
     ctx.font = "bold 12em Regency Script";
     ctx.fillText("D", 110, 185);
 
-    //requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 }

@@ -155,25 +155,28 @@ const compile = (tpl, obj, path, destPath) => {
                     }
 
                     let replaceOptions = {
-                        regex: /(#uri:.+?\.(?:js|css))/ig,
+                        regex: /(#uri:.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig,
                         replace: str => {
-                            let mt = /#uri:(.+?\.(?:js|css))/ig.exec(str);
+                            let mt = /#uri:(.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig.exec(str);
                             let fl = mt[1];
 
                             let tmp = /\.(js|css)$/ig.exec(fl);
+                            let sub_uri = '/';
 
-                            if(tmp) {
-                                let sub_uri = '/' + tmp[1] + '/' + fl;
-
-                                if(existsSync(assetsTemplatePublicPath + sub_uri))
-                                    return assetsTemplateURI + sub_uri;
-
-                                if(existsSync(assetsRootPublicPath + sub_uri))
-                                    return assetsRootURI + sub_uri;
-
-                                gutil.log('Warning: Asset not found \'' + fl + '\'. Using template root URI as asset URI.');
-                                return templateRootURI + '/' + fl;
+                            if(tmp !== null) {
+                                sub_uri = '/' + tmp[1] + '/' + fl;
+                            } else if(/\.(png|jpg|jpeg|gif|svg)$/ig.test(str)) {
+                                sub_uri = '/img/' + fl;
                             }
+
+                            if(existsSync(assetsTemplatePublicPath + sub_uri))
+                                return assetsTemplateURI + sub_uri;
+
+                            if(existsSync(assetsRootPublicPath + sub_uri))
+                                return assetsRootURI + sub_uri;
+
+                            gutil.log('Warning: Asset not found \'' + fl + '\'. Using template root URI as asset URI.');
+                            return templateRootURI + '/' + fl;
 
                             return pth;
                         }
@@ -266,6 +269,9 @@ gulp.task('assets', () => {
         .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
         .pipe(gulp.dest('deraner/public/assets/js'));
+
+    gulp.src('deraner/assets/img/*')
+        .pipe(gulp.dest('deraner/public/assets/img'));
 });
 
 gulp.task('templates', () => {
