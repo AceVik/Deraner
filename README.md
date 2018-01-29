@@ -3,8 +3,11 @@
 Composer
 
 Node Package Manager
+
+
 ## Run following commands (Linux, Mac)
 ```bash
+mkdir -p tmp
 cd deraner
 composer update
 cd ..
