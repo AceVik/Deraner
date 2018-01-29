@@ -1,5 +1,9 @@
 # Deraner
-## Run follofing commands (Linux, Mac)
+## Requirements
+Composer
+
+Node Package Manager
+## Run following commands (Linux, Mac)
 ```bash
 cd deraner
 composer update
