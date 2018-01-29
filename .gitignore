@@ -6,5 +6,6 @@
 /deraner/var/
 /deraner/vendor/
 /node_modules/
+/tmp/*
 docker-compose.yml
 ###< symfony/framework-bundle ###

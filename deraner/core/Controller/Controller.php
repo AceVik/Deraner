@@ -6,8 +6,6 @@ use Deraner\Entity\Template;
 use Deraner\Entity\User;
 use Deraner\Repository\TemplateRepository;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\Cache\Adapter\AbstractAdapter;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
