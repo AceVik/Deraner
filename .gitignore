@@ -3,6 +3,7 @@
 .idea
 /deraner/.env
 /deraner/public/templates/
+/deraner/public/assets/
 /deraner/var/
 /deraner/vendor/
 /node_modules/

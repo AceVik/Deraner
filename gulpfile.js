@@ -232,32 +232,31 @@ const compile = (tpl, obj, path, destPath) => {
     return rets;
 };
 
-gulp.task('assets', () => {
+const compileAssets = () => {
     gulp.src('deraner/assets/css/font-awesome/*.scss')
         .pipe(sass())
-        .pipe(concat('fa5.css'))
+        .pipe(concat('font-awesome5.css'))
         .pipe(uglifycss())
         .pipe(gulp.dest('deraner/public/assets/css'));
 
     gulp.src('deraner/assets/webfonts/*')
         .pipe(gulp.dest('deraner/public/assets/webfonts'));
 
+    let min = (env.APP_ENV != 'dev' ? '.min' : '');
 
-    gulp.src('node_modules/vue/dist/vue.min.js')
+    gulp.src('node_modules/vue/dist/vue' + min + '.js')
+        .pipe(concat('vue.js'))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
-    gulp.src([
-        'deraner/assets/js/Dwarf/*.js',
-        'deraner/assets/js/Dwarf/Dwarf.js'
-    ])  .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
-        .pipe(concat('dwarf.js'))
-        .pipe(babel({
-            "presets" : ["env"]
-        }))
-        .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
-        .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
+    gulp.src('node_modules/jquery/dist/jquery' + min + '.js')
+        .pipe(concat('jquery.js'))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
+    gulp.src('node_modules/jquery/dist/jquery.slim' + min + '.js')
+        .pipe(concat('jquery.slim.js'))
+        .pipe(gulp.dest('deraner/public/assets/js'));
+
+    /*
     gulp.src([
         'deraner/assets/js/Deraner/*.js',
         'deraner/assets/js/Deraner/Deraner.js'
@@ -269,12 +268,13 @@ gulp.task('assets', () => {
         .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
         .pipe(gulp.dest('deraner/public/assets/js'));
+        */
 
     gulp.src('deraner/assets/img/*')
         .pipe(gulp.dest('deraner/public/assets/img'));
-});
+};
 
-gulp.task('templates', () => {
+const compileTemplates = () => {
     forEachTemplate((tpl, path, dpath) => {
         gutil.log('Compiling template \'' + tpl.name + '\' ...');
 
@@ -282,6 +282,19 @@ gulp.task('templates', () => {
         compile(tpl, tpl.assets, path + '/assets/', dpath + '/assets/');
         compile(tpl, tpl.templates, path + '/', dpath + '/');
     });
+};
+
+gulp.task('assets', () => {
+    compileAssets();
 });
 
-gulp.task('default', ['assets', 'templates']);
+gulp.task('templates', () => {
+    compileTemplates();
+});
+
+gulp.task('all', () => {
+    compileAssets();
+    compileTemplates();
+});
+
+gulp.task('default', ['all']);

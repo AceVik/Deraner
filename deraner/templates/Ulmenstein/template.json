@@ -66,7 +66,7 @@
           "presets" : ["env"]
         },
         "src" : [
-          "js/app/*.jsx"
+          "js/app/*.js"
         ]
       }
     ]
