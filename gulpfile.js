@@ -244,16 +244,48 @@ const compileAssets = () => {
 
     let min = (env.APP_ENV != 'dev' ? '.min' : '');
 
+    // ##################### Vue.js #####################
     gulp.src('node_modules/vue/dist/vue' + min + '.js')
         .pipe(concat('vue.js'))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
+    // ##################### jQuery #####################
     gulp.src('node_modules/jquery/dist/jquery' + min + '.js')
         .pipe(concat('jquery.js'))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
     gulp.src('node_modules/jquery/dist/jquery.slim' + min + '.js')
         .pipe(concat('jquery.slim.js'))
+        .pipe(gulp.dest('deraner/public/assets/js'));
+
+    // ##################### Popper #####################
+    gulp.src('node_modules/popper.js/dist/popper' + min + '.js')
+        .pipe(concat('popper.js'))
+        .pipe(gulp.dest('deraner/public/assets/js'));
+
+    gulp.src('node_modules/popper.js/dist/popper-utils' + min + '.js')
+        .pipe(concat('popper-utils.js'))
+        .pipe(gulp.dest('deraner/public/assets/js'));
+
+    // ################### Bootstrap ####################
+    gulp.src('node_modules/bootstrap/dist/css/bootstrap' + min + '.css')
+        .pipe(concat('bootstrap.css'))
+        .pipe(gulp.dest('deraner/public/assets/css'));
+
+    gulp.src('node_modules/bootstrap/dist/css/bootstrap-grid' + min + '.css')
+        .pipe(concat('bootstrap-grid.css'))
+        .pipe(gulp.dest('deraner/public/assets/css'));
+
+    gulp.src('node_modules/bootstrap/dist/css/bootstrap-reboot' + min + '.css')
+        .pipe(concat('bootstrap-reboot.css'))
+        .pipe(gulp.dest('deraner/public/assets/css'));
+
+    gulp.src('node_modules/bootstrap/dist/js/bootstrap' + min + '.js')
+        .pipe(concat('bootstrap.js'))
+        .pipe(gulp.dest('deraner/public/assets/js'));
+
+    gulp.src('node_modules/bootstrap/dist/js/bootstrap.bundle' + min + '.js')
+        .pipe(concat('bootstrap.bundle.js'))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
     /*
@@ -269,6 +301,7 @@ const compileAssets = () => {
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
         .pipe(gulp.dest('deraner/public/assets/js'));
         */
+
 
     gulp.src('deraner/assets/img/*')
         .pipe(gulp.dest('deraner/public/assets/img'));
