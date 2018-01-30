@@ -1,35 +1,41 @@
 
 // Include gulp
-const env = require('dotenv').config({path: 'deraner/.env'}).parsed;
+const env           = require('dotenv').config({path: 'deraner/.env'}).parsed;
 
-const gulp = require('gulp');
-const gutil = require('gulp-util');
-const gulpif = require('gulp-if');
-const replace = require('gulp-replace');
+const gulp          = require('gulp');
+const gutil         = require('gulp-util');
+const gulpif        = require('gulp-if');
+const replace       = require('gulp-replace');
 
-const uglifyjs = require('gulp-uglify');
-const uglifycss = require('gulp-uglifycss');
-const uglifyhtml = require('gulp-htmlmin');
+const uglifyjs      = require('gulp-uglify');
+const uglifycss     = require('gulp-uglifycss');
+const uglifyhtml    = require('gulp-htmlmin');
 
-const concat = require('gulp-concat');
-const merge = require('merge-stream');
+const concat        = require('gulp-concat');
+const merge         = require('merge-stream');
 
-const pug = require('gulp-pug');
+const pug           = require('gulp-pug');
+const sass          = require('gulp-sass');
+const babel         = require('gulp-babel');
+const typescript    = require('gulp-typescript');
 
-const sass = require('gulp-sass');
-const babel = require('gulp-babel');
+const sourcemaps    = require('gulp-sourcemaps');
 
-const sourcemaps = require('gulp-sourcemaps');
-
-const { lstatSync, readdirSync, existsSync, readFileSync } = require('fs');
-const { join } = require('path');
+const { lstatSync,
+        readdirSync,
+        existsSync,
+        readFileSync
+}                   = require('fs');
+const { join }      = require('path');
 
 const builders = {
-    sass    : sass,
-    scss    : sass,
-    babel   : babel,
-    pug     : pug,
-    jade    : pug
+    sass        : sass,
+    scss        : sass,
+    babel       : babel,
+    typescript  : typescript,
+    ts          : typescript,
+    pug         : pug,
+    jade        : pug
 };
 
 const parseDestData = dest => {
