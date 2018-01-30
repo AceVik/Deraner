@@ -247,25 +247,25 @@ gulp.task('assets', () => {
         .pipe(gulp.dest('deraner/public/assets/js'));
 
     gulp.src([
-        'deraner/assets/js/Dwarf/*',
-        'deraner/assets/js/Dwarf/Dwarf.jsx'
+        'deraner/assets/js/Dwarf/*.js',
+        'deraner/assets/js/Dwarf/Dwarf.js'
     ])  .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
+        .pipe(concat('dwarf.js'))
         .pipe(babel({
             "presets" : ["env"]
         }))
-        .pipe(concat('dwarf.js'))
         .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
         .pipe(gulp.dest('deraner/public/assets/js'));
 
     gulp.src([
-        'deraner/assets/js/Deraner/*',
-        'deraner/assets/js/Deraner/Deraner.jsx'
+        'deraner/assets/js/Deraner/*.js',
+        'deraner/assets/js/Deraner/Deraner.js'
     ])  .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
+        .pipe(concat('deraner.js'))
         .pipe(babel({
             "presets" : ["env"]
         }))
-        .pipe(concat('deraner.js'))
         .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
         .pipe(gulp.dest('deraner/public/assets/js'));

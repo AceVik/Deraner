@@ -11,7 +11,7 @@ class Dwarf {
 
     }
 
-    static bagify(obj) {
+    static bagIn(obj) {
         return new Bag(obj);
     }
 }
