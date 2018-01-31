@@ -3,16 +3,22 @@ web:
   ports:
     - "127.0.0.1:80:80"
   volumes:
-    - ./deraner:/deraner
+    - ./deraner:/var/www/deraner
     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
   links:
-    - php
+    - app
 
-php:
-  build: ./php
-  volumes: 
-    - ./deraner:/deraner
-    - ./php/php-fpm.conf:/usr/local/etc/php-fpm.d/deraner.conf
+app:
+  build: ./app
+  volumes:
+    - ./deraner:/var/www/deraner
+    - ./gulpfile.js:/var/www/gulpfile.js
+    - ./package.json:/var/www/package.json
+    - ./package-lock.json:/var/www/package-lock.json
+    - ./.babelrc:/var/www/.babelrc
+    - ./tmp/node_modules:/var/www/node_modules
+    - ./app/php-fpm.conf:/usr/local/etc/php-fpm.d/deraner.conf
+    - ./app/.zshrc:/root/.zshrc
   links:
     - mysql
     - redis
@@ -21,10 +27,10 @@ mysql:
   image: mariadb:latest
   ports:
     - "127.0.0.1:3316:3306"
-  environment: 
+  environment:
     - MYSQL_ROOT_PASSWORD=deraner
   volumes:
-     - ./tmp:/var/lib/mysql
+   - ./tmp:/var/lib/mysql
 
 redis:
   image: redis:latest
