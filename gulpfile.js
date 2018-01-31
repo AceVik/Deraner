@@ -238,7 +238,7 @@ const compile = (tpl, obj, path, destPath) => {
     return rets;
 };
 
-const compileAssets = () => {
+gulp.task('assets', done => {
     gulp.src('deraner/assets/css/font-awesome/*.scss')
         .pipe(sass())
         .pipe(concat('font-awesome5.css'))
@@ -311,29 +311,27 @@ const compileAssets = () => {
 
     gulp.src('deraner/assets/img/*')
         .pipe(gulp.dest('deraner/public/assets/img'));
-};
 
-const compileTemplates = () => {
+    done();
+});
+
+gulp.task('template-assets', done => {
+    forEachTemplate((tpl, path, dpath) => {
+        gutil.log('Compiling template-assets for template \'' + tpl.name + '\' ...');
+        compile(tpl, tpl.assets, path + '/assets/', dpath + '/assets/');
+    });
+
+    done();
+});
+
+gulp.task('templates', done => {
     forEachTemplate((tpl, path, dpath) => {
         gutil.log('Compiling template \'' + tpl.name + '\' ...');
-
-        //Important! Assets first.
-        compile(tpl, tpl.assets, path + '/assets/', dpath + '/assets/');
         compile(tpl, tpl.templates, path + '/', dpath + '/');
     });
-};
 
-gulp.task('assets', () => {
-    compileAssets();
+    done();
 });
 
-gulp.task('templates', () => {
-    compileTemplates();
-});
 
-gulp.task('all', () => {
-    compileAssets();
-    compileTemplates();
-});
-
-gulp.task('default', ['all']);
+gulp.task('default', gulp.series('assets', 'template-assets', 'templates'));

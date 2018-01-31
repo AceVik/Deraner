@@ -1,27 +1,27 @@
 # Deraner
 ## Requirements
-Composer
+Docker
 
-Node Package Manager
+Docker Compose
 
 
 ## Run following commands (Linux, Mac)
 ```bash
-mkdir -p tmp
-cd deraner
-composer update
-cd ..
-npm update
-gulp
 cp -rfpP docker-compose.dev.yml docker-compose.yml
-docker-compose up -d
-```
+docker-compose down
+docker-compose up -d --build
 
-Finally enter the php container and create the database 
-```bash
-docker exec -it deraner_php_1 bash
+docker exec -it deraner_app_1 zsh
 
-cd /deraner
+cd /var/www
+npm install
+gulp
+gulp
+
+cd deraner
+
+composer install
+
 bin/console doctrine:database:create
 bin/console doctrine:schema:create
 bin/console doctrine:query:sql "INSERT INTO templates (name, path) VALUES ('Ulmenstein', '')"
