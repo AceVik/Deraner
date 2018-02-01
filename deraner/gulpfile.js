@@ -1,7 +1,5 @@
 
 // Include gulp
-const env           = require('dotenv').config({path: 'deraner/.env'}).parsed;
-
 const gulp          = require('gulp');
 const gutil         = require('gulp-util');
 const gulpif        = require('gulp-if');
@@ -22,11 +20,19 @@ const typescript    = require('gulp-typescript');
 const sourcemaps    = require('gulp-sourcemaps');
 
 const { lstatSync,
-        readdirSync,
-        existsSync,
-        readFileSync
+    readdirSync,
+    existsSync,
+    readFileSync
 }                   = require('fs');
 const { join }      = require('path');
+
+const isDirectory = source => lstatSync(source).isDirectory()
+const getDirectories = source =>
+    readdirSync(source).map(name => join(source, name)).filter(isDirectory)
+
+let deranerRootDir = existsSync('./deraner') && isDirectory('./deraner') ? 'deraner/' : '';
+
+const env           = require('dotenv').config({path: deranerRootDir + '.env'}).parsed;
 
 const builders = {
     sass        : sass,
@@ -55,12 +61,8 @@ const parseDestData = dest => {
     };
 };
 
-const isDirectory = source => lstatSync(source).isDirectory()
-const getDirectories = source =>
-    readdirSync(source).map(name => join(source, name)).filter(isDirectory)
-
-const templatesSrcDir = 'deraner/templates';
-const templatesDestDir = 'deraner/public/templates';
+const templatesSrcDir = deranerRootDir + 'templates';
+const templatesDestDir = deranerRootDir + 'public/templates';
 const templatesSettingsFile = 'template.json';
 
 let templates = null;
@@ -100,7 +102,7 @@ const compile = (tpl, obj, path, destPath) => {
 
     const templateRootPublicPath = templatesDestDir + '/' + tpl.name;
     const assetsTemplatePublicPath = templateRootPublicPath + '/assets';
-    const assetsRootPublicPath = 'deraner/public/assets';
+    const assetsRootPublicPath = deranerRootDir + 'public/assets';
 
     let rets = new Array();
 
@@ -190,18 +192,18 @@ const compile = (tpl, obj, path, destPath) => {
 
                     if('options' in args) {
                         stream = gulp.src(fullSRC)
-                                        .pipe(gulpif(createSourceMaps, sourcemaps.init()))
-                                        .pipe(builders[args.builder](args.options))
-                                        .pipe(replace(replaceOptions.regex, replaceOptions.replace))
-                                        .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
-                                        .pipe(gulpif(createSourceMaps, sourcemaps.write()));
+                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
+                            .pipe(builders[args.builder](args.options))
+                            .pipe(replace(replaceOptions.regex, replaceOptions.replace))
+                            .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
+                            .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     } else {
                         stream = gulp.src(fullSRC)
-                                        .pipe(gulpif(createSourceMaps, sourcemaps.init()))
-                                        .pipe(builders[args.builder]())
-                                        .pipe(replace(replaceOptions.regex, replaceOptions.replace))
-                                        .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
-                                        .pipe(gulpif(createSourceMaps, sourcemaps.write()));
+                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
+                            .pipe(builders[args.builder]())
+                            .pipe(replace(replaceOptions.regex, replaceOptions.replace))
+                            .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
+                            .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     }
                 } else {
                     console.error('Compilation error! Unknown builder ' + args.builder + '. ' + dest + ' could not be created.');
@@ -209,8 +211,8 @@ const compile = (tpl, obj, path, destPath) => {
                 }
             } else {
                 let ugly = ((dst.file !== null && dst.file.lastIndexOf('.css') > 0) || /^(?:.*\/)?css(?:\/.*)?$/.test(dst.path)) ? uglifycss :
-                            ((dst.file !== null && dst.file.lastIndexOf('.js') > 0) || /^(?:.*\/)?js(?:\/.*)?$/.test(dst.path) ? uglifyjs :
-                            ((dst.file !== null && dst.file.lastIndexOf('.html') > 0) || /^(?:.*\/)?template(?:\/.*)?$/.test(dst.path) ? uglifyhtml : false));
+                    ((dst.file !== null && dst.file.lastIndexOf('.js') > 0) || /^(?:.*\/)?js(?:\/.*)?$/.test(dst.path) ? uglifyjs :
+                        ((dst.file !== null && dst.file.lastIndexOf('.html') > 0) || /^(?:.*\/)?template(?:\/.*)?$/.test(dst.path) ? uglifyhtml : false));
 
                 if(!ugly && minify) {
                     minify = false;
@@ -239,65 +241,65 @@ const compile = (tpl, obj, path, destPath) => {
 };
 
 gulp.task('assets', done => {
-    gulp.src('deraner/assets/css/font-awesome/*.scss')
+    gulp.src(deranerRootDir + 'assets/css/font-awesome/*.scss')
         .pipe(sass())
         .pipe(concat('font-awesome5.css'))
         .pipe(uglifycss())
-        .pipe(gulp.dest('deraner/public/assets/css'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/css'));
 
-    gulp.src('deraner/assets/webfonts/*')
-        .pipe(gulp.dest('deraner/public/assets/webfonts'));
+    gulp.src(deranerRootDir + 'assets/webfonts/*')
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/webfonts'));
 
     let min = (env.APP_ENV != 'dev' ? '.min' : '');
 
     // ##################### Vue.js #####################
     gulp.src('node_modules/vue/dist/vue' + min + '.js')
         .pipe(concat('vue.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     // ##################### jQuery #####################
     gulp.src('node_modules/jquery/dist/jquery' + min + '.js')
         .pipe(concat('jquery.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     gulp.src('node_modules/jquery/dist/jquery.slim' + min + '.js')
         .pipe(concat('jquery.slim.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     // ##################### Popper #####################
     gulp.src('node_modules/popper.js/dist/popper' + min + '.js')
         .pipe(concat('popper.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     gulp.src('node_modules/popper.js/dist/popper-utils' + min + '.js')
         .pipe(concat('popper-utils.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     // ################### Bootstrap ####################
     gulp.src('node_modules/bootstrap/dist/css/bootstrap' + min + '.css')
         .pipe(concat('bootstrap.css'))
-        .pipe(gulp.dest('deraner/public/assets/css'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/css'));
 
     gulp.src('node_modules/bootstrap/dist/css/bootstrap-grid' + min + '.css')
         .pipe(concat('bootstrap-grid.css'))
-        .pipe(gulp.dest('deraner/public/assets/css'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/css'));
 
     gulp.src('node_modules/bootstrap/dist/css/bootstrap-reboot' + min + '.css')
         .pipe(concat('bootstrap-reboot.css'))
-        .pipe(gulp.dest('deraner/public/assets/css'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/css'));
 
     gulp.src('node_modules/bootstrap/dist/js/bootstrap' + min + '.js')
         .pipe(concat('bootstrap.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     gulp.src('node_modules/bootstrap/dist/js/bootstrap.bundle' + min + '.js')
         .pipe(concat('bootstrap.bundle.js'))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     /*
     gulp.src([
-        'deraner/assets/js/Deraner/*.js',
-        'deraner/assets/js/Deraner/Deraner.js'
+        deranerRootDir + 'assets/js/Deraner/*.js',
+        deranerRootDir + 'assets/js/Deraner/Deraner.js'
     ])  .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
         .pipe(concat('deraner.js'))
         .pipe(babel({
@@ -305,12 +307,12 @@ gulp.task('assets', done => {
         }))
         .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
         .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
-        .pipe(gulp.dest('deraner/public/assets/js'));
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
         */
 
 
-    gulp.src('deraner/assets/img/*')
-        .pipe(gulp.dest('deraner/public/assets/img'));
+    gulp.src(deranerRootDir + 'assets/img/*')
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/img'));
 
     done();
 });

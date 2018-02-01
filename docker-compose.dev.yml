@@ -12,11 +12,6 @@ app:
   build: ./app
   volumes:
     - ./deraner:/var/www/deraner
-    - ./gulpfile.js:/var/www/gulpfile.js
-    - ./package.json:/var/www/package.json
-    - ./package-lock.json:/var/www/package-lock.json
-    - ./.babelrc:/var/www/.babelrc
-    - ./tmp/node_modules:/var/www/node_modules
     - ./app/php-fpm.conf:/usr/local/etc/php-fpm.d/deraner.conf
     - ./app/.zshrc:/root/.zshrc
   links:

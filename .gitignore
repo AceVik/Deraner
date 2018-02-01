@@ -1,12 +1,12 @@
 
 ###> symfony/framework-bundle ###
-.idea
+/.idea/
 /deraner/.env
 /deraner/public/templates/
 /deraner/public/assets/
 /deraner/var/
 /deraner/vendor/
-/node_modules/
-tmp/*
+/deraner/node_modules/
+/tmp/
 docker-compose.yml
 ###< symfony/framework-bundle ###

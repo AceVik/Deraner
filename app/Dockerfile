@@ -39,7 +39,8 @@ RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
 RUN apt-get install -y nodejs
 RUN apt-get install -y build-essential
 
-RUN cd /var/www
+WORKDIR /var/www/deraner
+RUN cd /var/www/deraner
 
 RUN npm cache clean --force
 RUN npm install npm -g
