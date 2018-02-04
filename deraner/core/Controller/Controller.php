@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Deraner controller base
@@ -71,10 +72,14 @@ abstract class Controller implements ContainerAwareInterface {
         return $redisAdapter;
     }*/
 
+    /**
+     * @return Template|null
+     */
     public function getTemplate() : Template {
         $user = $this->getUser();
+        $template = null;
 
-        if(is_null($user)) {
+        if(is_null($user) || is_null($template = $user->getTemplate())) {
             /**
              * @var TemplateRepository
              */
@@ -83,7 +88,7 @@ abstract class Controller implements ContainerAwareInterface {
             return $templateRepository->getTemplateByName('Ulmenstein');
         }
 
-        return $user->getTemplate();
+        return $template;
     }
 
     /**
@@ -129,17 +134,16 @@ abstract class Controller implements ContainerAwareInterface {
      * @return User|null
      * @throws \LogicException If SecurityBundle is not available
      */
-    protected function getUser() {
-        if (!$this->container->has('security.token_storage')) {
+    protected function getUser() : ?User {
+        if(!$this->container->has('security.token_storage')) {
             throw new \LogicException('The SecurityBundle is not registered in your application. Try running "composer require symfony/security-bundle".');
         }
 
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+        if(is_null($token = $this->container->get('security.token_storage')->getToken())) {
             return null;
         }
 
-        if (!is_object($user = $token->getUser())) {
-            // e.g. anonymous authentication
+        if(!is_object($user = $token->getUser())) {
             return null;
         }
 

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Deraner\Controller\Controller;
 
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,5 +14,7 @@ class SiteController extends Controller {
     */
     public function index(Request $rq) {
         return $this->serve('index');
+
+        $user = $this->getUser();
     }
 }

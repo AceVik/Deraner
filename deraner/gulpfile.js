@@ -25,6 +25,7 @@ const { lstatSync,
     readFileSync
 }                   = require('fs');
 const { join }      = require('path');
+const { spawnSync } = require('child_process');
 
 const isDirectory = source => lstatSync(source).isDirectory()
 const getDirectories = source =>
@@ -59,6 +60,54 @@ const parseDestData = dest => {
         path : dir,
         file : file
     };
+};
+
+const routes = (() => {
+    let result = {};
+    let proc = spawnSync('bin/console', ['debug:router']);
+
+    if(proc.status != 0) {
+        gutil.log(`Error! Could not execute 'bin/console debug:router'. Response: ${proc.stderr}`);
+        return null;
+    }
+
+    const RouteName = 0;
+    const RouteMethod = 1;
+    const RouteScheme = 2;
+    const RouteHost = 3;
+    const RoutePath = 4;
+
+    let lines = proc.stdout.toString().split(/\r?\n/);
+    for(let i = 3; i < lines.length - 3; i++) {
+        let line = lines[i].trim();
+
+        let columns = line.split(/\s+/);
+
+        result[columns[RouteName]] = {
+            name: columns[RouteName],
+            method: columns[RouteMethod],
+            scheme: columns[RouteScheme],
+            host: columns[RouteHost],
+            path: columns[RoutePath]
+        };
+    }
+
+    return result;
+})();
+
+const routeReplaceOptions = {
+    regex: /(#route:\w+)/ig,
+    replace: str => {
+        let mt = /#route:(\w+)/ig.exec(str);
+
+        if(mt[1] in routes) {
+            return routes[mt[1]].path;
+        }
+
+        gutil.log('Warning: Route \'' + mt[1] + '\' not found!');
+
+        return str;
+    }
 };
 
 const templatesSrcDir = deranerRootDir + 'templates';
@@ -103,6 +152,34 @@ const compile = (tpl, obj, path, destPath) => {
     const templateRootPublicPath = templatesDestDir + '/' + tpl.name;
     const assetsTemplatePublicPath = templateRootPublicPath + '/assets';
     const assetsRootPublicPath = deranerRootDir + 'public/assets';
+
+    const uriReplaceOptions = {
+        regex: /(#uri:.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig,
+        replace: str => {
+            let mt = /#uri:(.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig.exec(str);
+            let fl = mt[1];
+
+            let tmp = /\.(js|css)$/ig.exec(fl);
+            let sub_uri = '/';
+
+            if(tmp !== null) {
+                sub_uri = '/' + tmp[1] + '/' + fl;
+            } else if(/\.(png|jpg|jpeg|gif|svg)$/ig.test(str)) {
+                sub_uri = '/img/' + fl;
+            }
+
+            if(existsSync(assetsTemplatePublicPath + sub_uri))
+                return assetsTemplateURI + sub_uri;
+
+            if(existsSync(assetsRootPublicPath + sub_uri))
+                return assetsRootURI + sub_uri;
+
+            gutil.log('Warning: Asset not found \'' + fl + '\'. Using template root URI as asset URI.');
+            return templateRootURI + '/' + fl;
+
+            return pth;
+        }
+    };
 
     let rets = new Array();
 
@@ -162,46 +239,20 @@ const compile = (tpl, obj, path, destPath) => {
                         console.warn('Compilation warning! Unknown file type.' + dest + ' can not be minified.');
                     }
 
-                    let replaceOptions = {
-                        regex: /(#uri:.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig,
-                        replace: str => {
-                            let mt = /#uri:(.+?\.(?:js|css|png|jpg|jpeg|gif|svg))/ig.exec(str);
-                            let fl = mt[1];
-
-                            let tmp = /\.(js|css)$/ig.exec(fl);
-                            let sub_uri = '/';
-
-                            if(tmp !== null) {
-                                sub_uri = '/' + tmp[1] + '/' + fl;
-                            } else if(/\.(png|jpg|jpeg|gif|svg)$/ig.test(str)) {
-                                sub_uri = '/img/' + fl;
-                            }
-
-                            if(existsSync(assetsTemplatePublicPath + sub_uri))
-                                return assetsTemplateURI + sub_uri;
-
-                            if(existsSync(assetsRootPublicPath + sub_uri))
-                                return assetsRootURI + sub_uri;
-
-                            gutil.log('Warning: Asset not found \'' + fl + '\'. Using template root URI as asset URI.');
-                            return templateRootURI + '/' + fl;
-
-                            return pth;
-                        }
-                    };
-
                     if('options' in args) {
                         stream = gulp.src(fullSRC)
                             .pipe(gulpif(createSourceMaps, sourcemaps.init()))
                             .pipe(builders[args.builder](args.options))
-                            .pipe(replace(replaceOptions.regex, replaceOptions.replace))
+                            .pipe(replace(uriReplaceOptions.regex, uriReplaceOptions.replace))
+                            .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
                             .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                             .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     } else {
                         stream = gulp.src(fullSRC)
                             .pipe(gulpif(createSourceMaps, sourcemaps.init()))
                             .pipe(builders[args.builder]())
-                            .pipe(replace(replaceOptions.regex, replaceOptions.replace))
+                            .pipe(replace(uriReplaceOptions.regex, uriReplaceOptions.replace))
+                            .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
                             .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                             .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     }
@@ -296,19 +347,20 @@ gulp.task('assets', done => {
         .pipe(concat('bootstrap.bundle.js'))
         .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
-    /*
-    gulp.src([
-        deranerRootDir + 'assets/js/Deraner/*.js',
-        deranerRootDir + 'assets/js/Deraner/Deraner.js'
-    ])  .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
-        .pipe(concat('deraner.js'))
-        .pipe(babel({
-            "presets" : ["env"]
-        }))
-        .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
-        .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
-        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
-        */
+        merge(  gulp.src(deranerRootDir + 'node_modules/axios/dist/axios' + min + '.js'),
+                gulp.src([
+                    deranerRootDir + 'assets/js/*.js',
+                    deranerRootDir + 'assets/js/Deraner.js'])
+                    .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
+                    .pipe(concat('deraner.js'))
+                    .pipe(babel({
+                        "presets" : ["env"]
+                    }))
+                    .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
+                    .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
+                    .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
+        ).pipe(concat('deraner.js'))
+         .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
 
     gulp.src(deranerRootDir + 'assets/img/*')

@@ -42,8 +42,10 @@ class Template {
      */
     protected $users;
 
-    public function __construct() {
+    public function __construct($name) {
+        $this->name = $name;
         $this->users = new ArrayCollection();
+        $this->path = '';
     }
 
     public function getName() {

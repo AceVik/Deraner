@@ -38,3 +38,7 @@ services:
 
     Deraner\Entity\:
         resource: '../core/Entity'
+
+    App\DataFixtures\:
+            resource: '../src/DataFixtures'
+            tags: ['doctrine.fixture.orm']
