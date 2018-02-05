@@ -1,0 +1,7 @@
+$information-x4k: "all and (min-width : 2550px)";
+
+@media #{$information-x4k} {
+  body {
+    background-size: 15%;
+  }
+}

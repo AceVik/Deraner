@@ -1,8 +1,13 @@
 {
   "name" : "Ulmenstein",
   "author" : "AceVik <mail@acevik.de>",
+  "version" : "0.1dev",
   "env" : {
-    "test": "AceVik is sooo coool!!!"
+    "license" : {
+      "background" : {
+        "tag": "<a href='https://www.freepik.com/free-vector/forest-herbs-blue-background_1380709.htm'>Designed by Freepik</a>"
+      }
+    }
   },
 
   "templates" : {
@@ -55,6 +60,16 @@
         "minify": false,
         "src" : [
           "webfonts/*"
+        ]
+      }
+    ],
+
+    "img" : [
+      {
+        "sourcemap": false,
+        "minify": false,
+        "src" : [
+          "img/*"
         ]
       }
     ],

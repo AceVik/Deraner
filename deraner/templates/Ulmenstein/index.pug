@@ -2,8 +2,8 @@ doctype html
 html(lang="de")
     head
         meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-        title Test
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no")
+        title(v-html="title")
         link(rel="icon" type="image/png" href="#uri:icon.png" sizes="256x256")
 
         link(rel="stylesheet" href="#uri:font-awesome5.css")
@@ -13,7 +13,7 @@ html(lang="de")
         script(type="text/javascript" src="#uri:deraner.js")
         script(type="text/javascript" src="#uri:app.js")
     body
-        h1
-            i.fas.fa-user
-            div #{template.name}: #{template.env.test}
-            div #{env.APP_ENV}
+        main
+            header Test Header
+            section Content
+            footer A footer

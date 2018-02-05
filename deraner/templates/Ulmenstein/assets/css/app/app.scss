@@ -1,3 +1,23 @@
-body {
-  background-color: #aaa;
+html, body, body > main {
+  width: 100%;
+  height: 100%;
+
+  margin: 0px;
+  padding: 0px;
 }
+
+body {
+  background: url(#uri:bg.jpg);
+  background-size: 25%;
+}
+
+main {
+  background-color: rgba(255, 150, 150, 0.0);
+}
+
+
+
+
+@import 'x4k';
+@import 'xtab';
+@import 'xmob';
