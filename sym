@@ -1,0 +1,10 @@
+#!/bin/sh
+
+CMD="docker-compose exec app bin/console"
+
+for i in "$@"
+do
+  CMD="$CMD $i"
+done
+
+eval $CMD

@@ -9,14 +9,17 @@ cp -rfpP docker-compose.dev.yml docker-compose.yml
 docker-compose down
 docker-compose up -d --build
 
-docker-compose exec app npm install
-docker-compose exec app composer install
+#Info: ./run <cmd> is an alias for docker-compose exec app <cmd>
+#Info: ./sym <cmd> is an alias for docker-compose exec app bin/console <cmd>
+
+./run npm install
+./run composer install
 
 # Gulp script is buggy at time, thats why run 2 times.
-docker-compose exec app gulp
-docker-compose exec app gulp
+./run gulp
+./run gulp
 
-docker-compose exec app bin/console doctrine:database:create
-docker-compose exec app bin/console doctrine:schema:create
-docker-compose exec app bin/console doctrine:query:sql "INSERT INTO templates (name, path) VALUES ('Ulmenstein', '')"
+./sym doctrine:database:create
+./sym doctrine:schema:create
+./sym doctrine:fixtures:load
 ```
