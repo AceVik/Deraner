@@ -10,6 +10,8 @@ const uglifycss     = require('gulp-uglifycss');
 const uglifyhtml    = require('gulp-htmlmin');
 
 const concat        = require('gulp-concat');
+const concatFiles   = require('concat-files');
+const concatenate   = require('concatenate');
 const merge         = require('merge-stream');
 
 const pug           = require('gulp-pug');
@@ -22,7 +24,8 @@ const sourcemaps    = require('gulp-sourcemaps');
 const { lstatSync,
     readdirSync,
     existsSync,
-    readFileSync
+    readFileSync,
+    mkdirSync
 }                   = require('fs');
 const { join }      = require('path');
 const { spawnSync } = require('child_process');
@@ -34,6 +37,16 @@ const getDirectories = source =>
 let deranerRootDir = existsSync('./deraner') && isDirectory('./deraner') ? 'deraner/' : '';
 
 const env           = require('dotenv').config({path: deranerRootDir + '.env'}).parsed;
+
+let cleanFilesList = new Array();
+
+const tempDir = 'var/cache/' + env.APP_ENV;
+
+if(!existsSync(tempDir) || !isDirectory(tempDir)) {
+    mkdirSync(tempDir);
+}
+
+const IS_DEV = (env.APP_ENV == 'dev');
 
 const builders = {
     sass        : sass,
@@ -194,12 +207,31 @@ const compile = (tpl, obj, path, destPath) => {
 
             let fullSRC = new Array();
 
+            let preconcats = new Array();
+
             if('src' in args) {
                 if(typeof args.src == 'string') {
                     fullSRC.push(path + args.src);
                 } else {
                     for(let i = 0; i < args.src.length; i++) {
-                        fullSRC.push(path + args.src[i]);
+                        if(typeof args.src[i] == 'string') {
+                            fullSRC.push(path + args.src[i]);
+                        } else {
+                            let tmpFile = 'tmp' + i + dst.file || '';
+                            let tmpFullSRC = new Array();
+
+                            for(let c = 0; c < args.src[i].length; c++) {
+                                tmpFullSRC.push(path + args.src[i][c]);
+                            }
+
+                            let filePath = tempDir + '/' + tmpFile;
+
+                            console.log(tmpFullSRC);
+
+                            concatenate(tmpFullSRC, filePath);
+
+                            fullSRC.push(filePath);
+                        }
                     }
                 }
             } else {
@@ -209,8 +241,8 @@ const compile = (tpl, obj, path, destPath) => {
 
             let stream = null;
 
-            let minify = ('minify' in args ? args.minify : env.APP_ENV != 'dev');
-            let createSourceMaps = (('sourcemap' in args ? args.sourcemap : true) && env.APP_ENV == 'dev');
+            let minify = ('minify' in args ? args.minify : !IS_DEV);
+            let createSourceMaps = (('sourcemap' in args ? args.sourcemap : true) && IS_DEV);
 
             if('builder' in args) {
                 if(args.builder in builders) {
@@ -221,7 +253,7 @@ const compile = (tpl, obj, path, destPath) => {
                         ugly = uglifyhtml;
                         args.options = args.options || {};
 
-                        args.options.pretty = env.APP_ENV == 'dev' ? args.options.pretty || true : false;
+                        args.options.pretty = IS_DEV ? args.options.pretty || true : false;
 
                         args.options.data = args.options.data || {};
                         args.options.data.template = args.options.data.template || {};
@@ -232,6 +264,8 @@ const compile = (tpl, obj, path, destPath) => {
                         args.options.data.template.env = args.options.data.template.env || tpl.env || null;
 
                         args.options.data.env = env;
+
+                        args.options.data.env.is_dev = args.options.data.env.is_dev || IS_DEV;
                     }
 
                     if(!ugly && minify) {
@@ -239,20 +273,22 @@ const compile = (tpl, obj, path, destPath) => {
                         console.warn('Compilation warning! Unknown file type.' + dest + ' can not be minified.');
                     }
 
+                    console.log(fullSRC);
+
                     if('options' in args) {
                         stream = gulp.src(fullSRC)
-                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
-                            .pipe(builders[args.builder](args.options))
                             .pipe(replace(uriReplaceOptions.regex, uriReplaceOptions.replace))
                             .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
+                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
+                            .pipe(builders[args.builder](args.options))
                             .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                             .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     } else {
                         stream = gulp.src(fullSRC)
-                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
-                            .pipe(builders[args.builder]())
                             .pipe(replace(uriReplaceOptions.regex, uriReplaceOptions.replace))
                             .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
+                            .pipe(gulpif(createSourceMaps, sourcemaps.init()))
+                            .pipe(builders[args.builder]())
                             .pipe(gulpif(minify, !ugly ? gutil.noop() : ugly().on('error', gutil.log)))
                             .pipe(gulpif(createSourceMaps, sourcemaps.write()));
                     }
@@ -301,11 +337,15 @@ gulp.task('assets', done => {
     gulp.src(deranerRootDir + 'assets/webfonts/*')
         .pipe(gulp.dest(deranerRootDir + 'public/assets/webfonts'));
 
-    let min = (env.APP_ENV != 'dev' ? '.min' : '');
+    let min = (!IS_DEV ? '.min' : '');
 
     // ##################### Vue.js #####################
     gulp.src('node_modules/vue/dist/vue' + min + '.js')
         .pipe(concat('vue.js'))
+        .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
+
+    gulp.src('node_modules/vee-validate/dist/vee-validate' + min + '.js')
+        .pipe(concat('vee-validate.js'))
         .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 
     // ##################### jQuery #####################
@@ -351,14 +391,14 @@ gulp.task('assets', done => {
                 gulp.src([
                     deranerRootDir + 'assets/js/*.js',
                     deranerRootDir + 'assets/js/Deraner.js'])
-                    .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.init()))
+                    .pipe(gulpif(IS_DEV, sourcemaps.init()))
                     .pipe(concat('deraner.js'))
                     .pipe(babel({
                         "presets" : ["env"]
                     }))
                     .pipe(replace(routeReplaceOptions.regex, routeReplaceOptions.replace))
-                    .pipe(gulpif(env.APP_ENV != 'dev', uglifyjs()))
-                    .pipe(gulpif(env.APP_ENV == 'dev', sourcemaps.write()))
+                    .pipe(gulpif(!IS_DEV, uglifyjs()))
+                    .pipe(gulpif(IS_DEV, sourcemaps.write()))
         ).pipe(concat('deraner.js'))
          .pipe(gulp.dest(deranerRootDir + 'public/assets/js'));
 

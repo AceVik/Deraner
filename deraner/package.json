@@ -17,11 +17,14 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "bootstrap": "^4.0.0",
+    "concat-files": "^0.1.1",
+    "concatenate": "0.0.2",
     "dotenv": "^4.0.0",
     "graceful-fs": "^4.1.11",
     "gulp": "^4.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
+    "gulp-forkat": "0.0.1",
     "gulp-htmlmin": "^4.0.0",
     "gulp-if": "^2.0.2",
     "gulp-pug": "^3.3.0",
@@ -40,6 +43,7 @@
     "popper.js": "^1.12.9",
     "pug": "^2.0.0-rc.4",
     "typescript": "^2.7.1",
+    "vee-validate": "^2.0.0-beta.17",
     "vue": "^2.5.13"
   }
 }

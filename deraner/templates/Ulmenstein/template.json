@@ -5,7 +5,9 @@
   "env" : {
     "license" : {
       "background" : {
-        "tag": "<a href='https://www.freepik.com/free-vector/forest-herbs-blue-background_1380709.htm'>Designed by Freepik</a>"
+        "tag": "<a href='https://www.freepik.com/free-vector/japanese-seamless-pattern-cut-out-from-paper_1261965.htm'>Designed by Freepik</a>",
+        "link": "https://www.freepik.com/free-vector/japanese-seamless-pattern-cut-out-from-paper_1261965.htm",
+        "name": "Designed by Freepik"
       }
     }
   },
@@ -22,20 +24,6 @@
     ]
   },
   "assets" : {
-    "css:fa5.css" : [
-      {
-        "builder": "sass",
-        "options": {
-          "errLogToConsole": true
-        },
-        "sourcemap": false,
-        "minify": true,
-        "src": [
-          "css/font-awesome/*.scss"
-        ]
-      }
-    ],
-
     "css:style.css" : [
       {
         "minify": true,
@@ -74,14 +62,29 @@
       }
     ],
 
-    "js:app.js" : [
+    "js:template.js" : [
       {
         "builder" : "babel",
         "options" : {
           "presets" : ["env"]
         },
         "src" : [
-          "js/app/*.js"
+          [
+            "js/ui/*.js",
+            "js/ui/UI.js"
+          ]
+        ]
+      }
+    ],
+
+    "js:run.js" : [
+      {
+        "builder" : "babel",
+        "options" : {
+          "presets" : ["env"]
+        },
+        "src" : [
+          "js/app/run.js"
         ]
       }
     ]
