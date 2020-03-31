@@ -1,3 +1,5 @@
+# WARNING: This project is dead!
+
 # Deraner
 ## Requirements
 Docker and Docker Compose
